@@ -1,0 +1,7 @@
+1. This is a review of the manuscript "Modeling internal defects in conductive materials using electric potential measurements" by Avalur, Kishore, and Tokala. I recommend minor revisions. The manuscript uses finite difference models to model conduction in a 2D domain, notionally to find defects for non destructive testing of 3D printed parts.
+
+2. There are minor typos that should be fixed as shown in the markup. The libraries used in the work should be properly cited. Appendix A is a code listing; to aid in audience understanding it would help if there was a block diagram or pseudocode explaining the code before the big code dump. Space could be saved if the code was provided as part of a github repository instead of typing the listing in the paper itself. Alternatively, the code listing should be set in a small sized fixed width font and syntax highlighting used in order to make it more readable. 
+
+3. In the maps of computed potential it would help if, in addition to colors, there were contourlines or perhaps electric field lines. Also, none of the plots have units for potential (V) or for the spatial domain (m). The plots should have something marking where the flaw is. 
+
+4. Are there any limits on the size of flaw versus the conductivity that would make the flaw visible or not? It is hard to evaluate this from the authors plots.
