@@ -1,10 +1,10 @@
-%\documentclass[10pt,journal,twoside]{IEEEtran} % for editor use only for final preprint
+\documentclass[10pt,journal,twoside]{IEEEtran} % for editor use only for final preprint
 
 % For initial draft
-\documentclass[10pt,draftcls,journal,onecolumn]{IEEEtran}
-\usepackage{endfloat}
+%\documentclass[10pt,draftcls,journal,onecolumn]{IEEEtran}
+%\usepackage{endfloat}
 %\usepackage[switch]{lineno}
-\usepackage{lineno}
+%\usepackage{lineno}
 
 
 \usepackage{cite}
@@ -51,7 +51,7 @@ pdfkeywords={\keywords}}}
 
 
 \begin{document}
-\linenumbers % for editor use
+%\linenumbers % for editor use
 \maketitle
 
 % AUTHORS PUT YOUR ABSTRACT HERE
@@ -65,13 +65,13 @@ In this project, a numerical model was developed to study how electric potential
 
 \section{Introduction}
 %\IEEEPARstart{T}{he electric} potential $V$ of a particle 
-\IEEEPARstart{E}{lectrical} conduction in a material is determined by the relationship between electric field, current flow, and electric potential, as described by Ohm’s law [1]. Variations in electric potential create an electric field, and this drives current through a conductive medium [3]. Charge is conserved and does not accumulate within the material at steady state. This leads to an equation for the potential, known as Laplace’s equation. To computationally study this behavior, the conductive region can be represented as a 2D grid with uniform spacing. Here, each grid point corresponds to the electric potential at that specific location. Boundary conditions are applied by fixing the potential on certain edges of the grid, such as holding one side at a high potential while keeping the other sides grounded [3]. Solving Laplace’s equation on this grid would produce the steady state potential distribution and form the basis for analyzing how the internal features can change the system’s electrical response.
+\IEEEPARstart{E}{lectrical} conduction in a material is determined by the relationship between electric field, current flow, and electric potential, as described by Ohm’s law \cite{knight:2017:physics}. Variations in electric potential create an electric field, and this drives current through a conductive medium \cite{jackson:1999:classical}. Charge is conserved and does not accumulate within the material at steady state. This leads to an equation for the potential, known as Laplace’s equation. To computationally study this behavior, the conductive region can be represented as a 2D grid with uniform spacing. Here, each grid point corresponds to the electric potential at that specific location. Boundary conditions are applied by fixing the potential on certain edges of the grid, such as holding one side at a high potential while keeping the other sides grounded \cite{jackson:1999:classical}. Solving Laplace’s equation on this grid would produce the steady state potential distribution and form the basis for analyzing how the internal features can change the system’s electrical response.
 
 
 
 
 \section{Methods and Materials}
-To model the electric potential inside the conductive region, Laplace’s equation was solved using a finite-difference method on a 2-dimensional grid [2]. The region was evenly divided into grid points, with each point representing the electric potential at that place. Boundary conditions were applied by fixing the potential along the edges of the grid, with one side held at a higher potential than the rest.
+To model the electric potential inside the conductive region, Laplace’s equation was solved using a finite-difference method on a 2-dimensional grid \cite{press:1992:numerical}. The region was evenly divided into grid points, with each point representing the electric potential at that place. Boundary conditions were applied by fixing the potential along the edges of the grid, with one side held at a higher potential than the rest.
 
 In a steady-state conductive material, no charge accumulates within the region because all charge is conserved. The continuity equation expresses this condition:
 \begin{equation}
@@ -101,11 +101,11 @@ This equation controls the electric potential throughout the conductive region. 
 
 
 \section{Computational model}
-The conductive material was represented using a two-dimensional grid. The grid consists of a 50x50 array, with the left boundary held at a high potential and the other boundaries grounded. Each point on the grid corresponds to the electric potential at that location, and the grid as a whole acts as a simplified model of the material. This allows the electric behavior of the system to be studied numerically instead of analytically.
+The conductive material was represented using a two-dimensional grid. The grid consists of a \numproduct{50x50} array, with the left boundary held at a high potential and the other boundaries grounded. Each point on the grid corresponds to the electric potential at that location, and the grid as a whole acts as a simplified model of the material. This allows the electric behavior of the system to be studied numerically instead of analytically.
 
 Boundary conditions were applied by fixing the potential values along the edges of the grid. One side of the grid was set to a high potential to represent an applied voltage, while the remaining sides were set to ground. These fixed boundaries remained constant throughout the course of the simulation, while the interior grid points were free to update.
 
-The potential values at the interior points were iteratively updated based on their surrounding neighbors until the grid itself reached a steady state. This steady-state solution represents how the electric potential would distribute itself throughout the material under the applied boundary conditions. By modifying the grid, such as introducing an internal blocked region to represent a defect, changes in the overall electrical response of the system can be observed. The computational grid and boundary conditions used in this model are shown in Figure 1.
+The potential values at the interior points were iteratively updated based on their surrounding neighbors until the grid itself reached a steady state. This steady-state solution represents how the electric potential would distribute itself throughout the material under the applied boundary conditions. By modifying the grid, such as introducing an internal blocked region to represent a defect, changes in the overall electrical response of the system can be observed. The computational grid and boundary conditions used in this model are shown in \cref{fig:1}.
 
 \begin{figure}
 \begin{center}
@@ -126,20 +126,20 @@ The potential values at the interior points were iteratively updated based on th
 \section{Procedures}
 First, the basic physical principles controlling electrical conduction were identified. Ohm’s law was used to relate current flow to the electric field, and the electric field was related to electric potential. Since charge does not accumulate in a steady-state system, these relationships combine and produce Laplace’s equation, which describes how electric potential behaves inside a uniform conductive material.
 
-To model this behavior computationally, the conductive material was represented using a Python program as a two-dimensional square grid. The grid was implemented as a 50x50 NumPy array, where each element corresponds to the electric potential at a specific location in the material. Boundary conditions were applied by directly assigning fixed potential values to the grid edges. One side of the grid was set to a high potential in order to represent an applied voltage, while the other sides were set to zero to represent ground. These boundary values were held constant throughout the simulation.
+To model this behavior computationally, the conductive material was represented using a Python program as a two-dimensional square grid. The grid was implemented as a \numproduct{50x50} NumPy array \cite{numpy}, where each element corresponds to the electric potential at a specific location in the material. Boundary conditions were applied by directly assigning fixed potential values to the grid edges. One side of the grid was set to a high potential in order to represent an applied voltage, while the other sides were set to zero to represent ground. These boundary values were held constant throughout the simulation.
 
 The interior points of the grid were solved using an iterative finite-difference method. In the beginning, the potential at every interior point was updated to equal the average of its four closest neighboring points. This update was performed using nested loops in the code, while skipping the boundary points so their values stayed fixed. The update process was repeated for several thousand iterations until the potential value changes became negligible, which indicated that a steady-state solution was reached.
 
 Once the baseline solution was obtained, an internal defect was introduced into the model. This defect was represented by choosing a small square portion near the center of the grid and stopping those points from being updated during the iteration process. In the code, this was handled using a conditional statement that excluded the defect section from the averaging step. This region behaved as an insulating flaw within the material.
 
-Lastly, the simulation results were visualized using Matplotlib. Heatmaps were generated to show the steady-state potential distribution for both the intact material and the material containing the defect. A difference plot was also created by subtracting the baseline potential grid from the defect grid. This showed how the defect changed the overall potential distribution.
+Lastly, the simulation results were visualized using Matplotlib \cite{matplotlib}. Heatmaps were generated to show the steady-state potential distribution for both the intact material and the material containing the defect. A difference plot was also created by subtracting the baseline potential grid from the defect grid. This showed how the defect changed the overall potential distribution.
 
 
 
 
 
 \section{Results}
-After running the simulation, the electric potential across the grid settled into a smooth pattern from the high-voltage side toward the sides that are grounded. This is what we expect from a solution to Laplace’s equation, and it showed that the numerical method was working correctly. The potential values stopped changing after multiple iterations, indicating that the system had reached a steady state. This electrical potential distribution obtained from the simulation is shown in Figure 2.
+After running the simulation, the electric potential across the grid settled into a smooth pattern from the high-voltage side toward the sides that are grounded. This is what we expect from a solution to Laplace’s equation, and it showed that the numerical method was working correctly. The potential values stopped changing after multiple iterations, indicating that the system had reached a steady state. This electrical potential distribution obtained from the simulation is shown in \cref{fig:2}.
 \begin{figure}
 \begin{center}
 \includegraphics[width=\columnwidth]{figures/FIG\_2.pdf}
@@ -148,7 +148,7 @@ After running the simulation, the electric potential across the grid settled int
 \label{fig:2}
 \end{figure}
 
-When a defect was added by blocking a small portion of the grid, the potential pattern changed. The values around the defect were distorted, and thisdisturbance spread outward toward the grid edges. The resulting electric potential distribution with the defect present is shown in Figure 3.
+When a defect was added by blocking a small portion of the grid, the potential pattern changed. The values around the defect were distorted, and thisdisturbance spread outward toward the grid edges. The resulting electric potential distribution with the defect present is shown in \cref{fig:3}.
 \begin{figure}
 \begin{center}
 \includegraphics[width=\columnwidth]{figures/FIG\_3.pdf}
@@ -166,7 +166,7 @@ Comparing the boundary values before and after adding the defect showed noticeab
 
 
 \section{Discussion}
-The results of this simulation show that internal changes within a conductive material can influence the electrical behavior observed at its surface. Even though the defect was located in the grid, its presence still altered the potential near the boundaries. This is important because it means that information about the interior of a material can be inferred without directly accessing it, which is the main idea behind non-destructive testing [4].
+The results of this simulation show that internal changes within a conductive material can influence the electrical behavior observed at its surface. Even though the defect was located in the grid, its presence still altered the potential near the boundaries. This is important because it means that information about the interior of a material can be inferred without directly accessing it, which is the main idea behind non-destructive testing \cite{loke:2013:recent}.
 
 The distortion caused by the defect was not limited to the immediate area around it. Instead, the effect spread outward and affected the overall potential pattern. This suggests that electrical measurements taken at the surface are sensitive to internal features. Even when those features are not visible or are relatively small.
 
@@ -211,7 +211,7 @@ DA developed the computational model, implemented the numerical simulation, and 
 
 %\end{thebibliography}
 \bibliographystyle{IEEEtran}
-\bibliography{example.bib}
+\bibliography{davalur.bib}
 
 % Images for the biography should be a 1in wide by 1.25 high or a 5:4 aspect ratio
 % Keep your biography short and to the point or the editors will shorten it
@@ -221,6 +221,6 @@ DA developed the computational model, implemented the numerical simulation, and 
 \end{IEEEbiography}
 \begin{IEEEbiography}[{\includegraphics[width=1in,height=1.25in,clip,keepaspectratio]{figures/tokala.jpeg}}]{Anika Tokala} is a senior in the Science and Engineering Magnet Program at Manalapan High School. Her main area of research is accessibility technology. 
 \end{IEEEbiography}
-
+\vfill
 \end{document}
 
