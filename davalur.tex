@@ -32,7 +32,7 @@
 \date{\today}
 \markboth{Journal of Science \& Engineering, Vol.~2, No.~5,~March 31, 2026}{Avalur, Kishore, \& Tokala: Modeling internal defects} % may need shortened form of author names or title
 \setcounter{page}{1} % LEAVE FOR EDITOR
-\newcommand{\keywords}{electric potential, equipotential lines, electric field visualizations, saline conductive medium, electrostatics, electric field mapping, data visualization in electrostatics, gel electrophoresis, electric field dynamics} % put your keywords here, lower case unless proper noun or acronym, separated by commas
+\newcommand{\keywords}{electric potential, Laplace's equation, finite-difference method, numerical modeling, non-destructive testing, equipotential lines, equipotentials, electric field visualizations, electric field mapping} % put your keywords here, lower case unless proper noun or acronym, separated by commas
 \makeatletter
 \AtBeginDocument{
 \hypersetup{%
@@ -56,7 +56,8 @@ pdfkeywords={\keywords}}}
 
 % AUTHORS PUT YOUR ABSTRACT HERE
 \begin{abstract}
-In this project, a numerical model was developed to study how electric potential behaves inside a conductive material and how internal defects can affect its electrical response. The material was represented as a two-dimensional grid, where each grid corresponds to an electric potential. Using basic principles of electrical conduction, the system was modeled under steady-state conditions and solved numerically using a finite-difference approach to Laplace’s equation. Boundary conditions were applied by setting one side of the grid to a high potential while the other sides were grounded. After getting a steady-state solution, an internal defect was introduced by blocking a small region of the grid to simulate an insulating flaw. The resulting potential distributions were compared before and after the defect was added. The results showed that the presence of an internal defect caused noticeable changes in the potential pattern. These findings suggest that electrical measurements taken at the surface of a conductive object can give information about internal features, which supports the use of electrical methods or non-destructive testing. This study tests the hypothesis that an internal insulating defect within a conductive material will produce measurable distortions in surface electric potential
+In this project, a numerical model was developed to study how electric potential behaves inside a conductive material and how internal defects can affect its electrical response. The material was represented as a two-dimensional grid, where each grid corresponds to an electric potential. Using basic principles of electrical conduction, the system was modeled under steady-state conditions and solved numerically using a finite-difference approach to Laplace’s equation. Boundary conditions were applied by setting one side of the grid to a high potential while the other sides were grounded. After getting a steady-state solution, an internal defect was introduced by blocking a small region of the grid to simulate an insulating flaw. The resulting potential distributions were compared before and after the defect was added. The results showed that the presence of an internal defect caused noticeable changes in the potential pattern. These findings suggest that electrical measurements taken at the surface of a conductive object can give information about internal features, which supports the use of electrical methods or non-destructive testing. 
+%This study tests the hypothesis that an internal insulating defect within a conductive material will produce measurable distortions in surface electric potential.
 \end{abstract}
 
 \begin{IEEEkeywords}
