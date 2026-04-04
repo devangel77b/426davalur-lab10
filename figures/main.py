@@ -1,7 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-
 # ----------------------------
 # Settings (change if needed)
 # ----------------------------
@@ -75,8 +74,8 @@ def save_figure1_grid_setup(filename: str, N: int) -> None:
     grid = np.zeros((N, N))
     plt.figure(figsize=(6, 6))
     plt.imshow(grid, cmap="gray")
-    #plt.axis("off")
-    #plt.title("2D Grid and Boundary Conditions", pad=20)
+    # plt.axis("off")
+    # plt.title("2D Grid and Boundary Conditions", pad=20)
 
     # Labels (matches your paper figure)
     plt.text(N / 2, -3.5, "High Potential", ha="center", fontsize=11)
@@ -92,8 +91,8 @@ def save_heatmap(V: np.ndarray, filename: str, title: str, cmap: str) -> None:
     plt.figure(figsize=(6, 6))
     plt.imshow(V, cmap=cmap)
     plt.colorbar(label="Electric Potential")
-    #plt.title(title)
-    #plt.axis("off")
+    # plt.title(title)
+    # plt.axis("off")
     plt.savefig(filename, dpi=300, bbox_inches="tight")
     plt.close()
 
@@ -102,8 +101,8 @@ def save_difference_map(deltaV: np.ndarray, filename: str, title: str) -> None:
     plt.figure(figsize=(6, 6))
     plt.imshow(deltaV, cmap="bwr")
     plt.colorbar(label="Change in Electric Potential")
-    #plt.title(title)
-    #plt.axis("off")
+    # plt.title(title)
+    # plt.axis("off")
     plt.savefig(filename, dpi=300, bbox_inches="tight")
     plt.close()
 
