@@ -11,6 +11,7 @@
 \usepackage{amsmath,amssymb,amsfonts}
 \usepackage{graphicx}
 \usepackage{siunitx}
+\sisetup{multi-part-units=single,separate-uncertainty=true,product-units=single}
 \usepackage[colorlinks=true,allcolors=blue]{hyperref}
 \usepackage{cleveref}
 \crefname{equation}{}{}
@@ -21,6 +22,8 @@
 \Crefname{table}{Table}{Tables}
 \usepackage{booktabs}
 \usepackage{multirow}
+
+\usepackage{minted}
 
 
 \title{Modeling internal defects in conductive materials using electric potential measuremetns} % Your title goes here
@@ -68,7 +71,7 @@ In this project, a numerical model was developed to study how electric potential
 %\IEEEPARstart{T}{he electric} potential $V$ of a particle 
 \IEEEPARstart{E}{lectrical} conduction in a material is determined by the relationship between electric field, current flow, and electric potential, as described by Ohm’s law \cite{knight:2017:physics}. Variations in electric potential create an electric field, and this drives current through a conductive medium \cite{jackson:1999:classical}. Charge is conserved and does not accumulate within the material at steady state. This leads to an equation for the potential, known as Laplace’s equation. To computationally study this behavior, the conductive region can be represented as a 2D grid with uniform spacing. Here, each grid point corresponds to the electric potential at that specific location. Boundary conditions are applied by fixing the potential on certain edges of the grid, such as holding one side at a high potential while keeping the other sides grounded \cite{jackson:1999:classical}. Solving Laplace’s equation on this grid would produce the steady state potential distribution and form the basis for analyzing how the internal features can change the system’s electrical response.
 
-
+Citations here \cite{ayyagari:2024:computational,baru:2024:demonstrating,cohen:2024:visualizing,edwards:2024:electric,kumar:2024:mapping}. 
 
 
 \section{Methods and Materials}
@@ -135,7 +138,7 @@ Once the baseline solution was obtained, an internal defect was introduced into 
 
 Lastly, the simulation results were visualized using Matplotlib \cite{matplotlib}. Heatmaps were generated to show the steady-state potential distribution for both the intact material and the material containing the defect. A difference plot was also created by subtracting the baseline potential grid from the defect grid. This showed how the defect changed the overall potential distribution.
 
-
+Data and code are available at \url{https://github.com/devangel77b/426davalur-lab10}.
 
 
 
@@ -207,6 +210,11 @@ DA developed the computational model, implemented the numerical simulation, and 
 
 
 
+
+\appendix
+\section{Implementation code}
+Code goes here
+\inputminted[fontsize=\scriptsize,linenos,breaklines]{python}{figures/main.py}
 
 
 
