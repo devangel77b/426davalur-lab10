@@ -24,6 +24,9 @@
 \usepackage{multirow}
 
 \usepackage{minted}
+\setminted{fontsize=\scriptsize,
+	linenos,breaklines,
+	xleftmargin=10pt,numbersep=4pt}
 
 
 \title{Modeling internal defects in conductive materials using electric potential measuremetns} % Your title goes here
@@ -214,7 +217,7 @@ DA developed the computational model, implemented the numerical simulation, and 
 \appendix
 \section{Implementation code}
 Code goes here
-\inputminted[fontsize=\scriptsize,linenos,breaklines]{python}{figures/main.py}
+\inputminted{python}{figures/main.py}
 
 
 
