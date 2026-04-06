@@ -74,18 +74,27 @@ In this project, a numerical model was developed to study how electric potential
 %\IEEEPARstart{T}{he electric} potential $V$ of a particle 
 \IEEEPARstart{E}{lectrical} conduction in a material is determined by the relationship between electric field, current flow, and electric potential, as described by Ohm’s law \cite{knight:2017:physics}. Variations in electric potential create an electric field, and this drives current through a conductive medium \cite{jackson:1999:classical}. Charge is conserved and does not accumulate within the material at steady state. This leads to an equation for the potential, known as Laplace’s equation. To computationally study this behavior, the conductive region can be represented as a 2D grid with uniform spacing. Here, each grid point corresponds to the electric potential at that specific location. Boundary conditions are applied by fixing the potential on certain edges of the grid, such as holding one side at a high potential while keeping the other sides grounded \cite{jackson:1999:classical}. Solving Laplace’s equation on this grid would produce the steady state potential distribution and form the basis for analyzing how the internal features can change the system’s electrical response.
 
-Citations here \cite{ayyagari:2024:computational,baru:2024:demonstrating,cohen:2024:visualizing,edwards:2024:electric,kumar:2024:mapping}. 
+Previous researchers examined conduction in a saline solution meant to simulate a low-cost electrophoresis system for biological studies \cite{ayyagari:2024:computational,baru:2024:demonstrating,cohen:2024:visualizing,edwards:2024:electric,kumar:2024:mapping}. These studies used measurements of voltage to map the equipotentials and electric fields within a test geometry, however, none considered the use of computational methods. Here, we consider the finite difference method, in which derivatives are approximated as differences between potential values at neighboring computational nodes, e.g. 
+\begin{equation}
+\dfrac{dV}{dx} \approx \dfrac{V_{n+1}-V_n}{x_{n+1}-x_n}.
+\end{equation}
+Application of this principle to 2D conduction equations is described below. 
+
+As 3D printers capable of metal and conductive materials become more available, low voltage DC electrical probing has potential advantages as a non-destructive testing (NDT) technique. Conventional techniques used in industry rely on x-rays from radioactive sources, pentrant dyes, or ultrasound equipment to accomplish NDT \cite{davis:2004:nondestructive,cawley:2001:nondestructive}, which may not be feasible for small-scale 3D printing setups. Methods based on conductivity have been applied to larger geophysical problems as well \cite{loke:2013:recent}. 
+
+
+
 
 
 \section{Methods and Materials}
-To model the electric potential inside the conductive region, Laplace’s equation was solved using a finite-difference method on a 2-dimensional grid \cite{press:1992:numerical}. The region was evenly divided into grid points, with each point representing the electric potential at that place. Boundary conditions were applied by fixing the potential along the edges of the grid, with one side held at a higher potential than the rest.
+To model the electric potential inside the conductive region, Laplace’s equation was solved using a finite-difference method on a two-dimensional grid \cite{press:1992:numerical}. The region was evenly divided into grid points, with each point representing the electric potential at that place. Boundary conditions were applied by fixing the potential along the edges of the grid, with one side held at a higher potential than the rest.
 
-In a steady-state conductive material, no charge accumulates within the region because all charge is conserved. The continuity equation expresses this condition:
+In a steady-state conductive material, no charge accumulates within the region because all charge is conserved \cite{barrons,tipler,openstax,jackson:1999:classical}. The continuity equation expresses this condition:
 \begin{equation}
 \vec{\nabla}\cdot\vec{J} = 0,
 \label{eq:1}
 \end{equation}
-where $\vec{J}$ is the current density. Current density and electrical field are related through Ohm’s law,
+where $\vec{J}$ is the current density. Current density and electrical field are related through Ohm’s law, expressed in differential form as \cite{jackson:1999:classical} 
 \begin{equation}
 \vec{J} = \sigma \vec{E},
 \label{eq:2}
@@ -95,12 +104,19 @@ and the electric field is related to the electric potential by
 \vec{E} = - \vec{\nabla} \phi.
 \label{eq:3}
 \end{equation}
-These relationships combine, assuming the material has uniform conductivity, giving Laplace’s equation:
+These relationships combine, assuming the material has uniform conductivity, giving Laplace’s equation \cite{jackson:1999:classical}:
 \begin{equation}
 \vec{\nabla}^2 \phi = 0,
 \label{eq:4}
 \end{equation}
-This equation controls the electric potential throughout the conductive region. On the grid, this was done by setting each interior point equal to the average of its four surrounding points. The process was repeated until the potential value stopped changing and was stabilized.
+where the zero on the right hand side of \cref{eq:4} indicates the absence of internal sources.  This equation controls the electric potential throughout the conductive region. In discretized form, \cref{eq:4} becomes \cite{press:1992:numerical}:
+\begin{equation}
+\dfrac{V_E - 2 V_X + V_W + V_N -2 V_X + V_S}{h^2} = 0,
+\end{equation}
+\begin{equation}
+4 V_X = V_E + V_W + V_N + V_S,
+\end{equation}
+where a given node point $V_X$ is adjacent to neighbors north, south, east, and west on a regular grid of uniform spacing $h$. We iteratively calculated $V$ by setting each interior point equal to the average of its four surrounding points. The process was repeated until the potential value stopped changing and was stabilized according to some small tolerance $\delta < \num{1e-6}$.
 
 
 
@@ -108,7 +124,7 @@ This equation controls the electric potential throughout the conductive region. 
 
 
 \section{Computational model}
-The conductive material was represented using a two-dimensional grid. The grid consists of a \numproduct{50x50} array, with the left boundary held at a high potential and the other boundaries grounded. Each point on the grid corresponds to the electric potential at that location, and the grid as a whole acts as a simplified model of the material. This allows the electric behavior of the system to be studied numerically instead of analytically.
+The conductive material was represented using a two-dimensional grid. The grid consisted of a \numproduct{50x50} array, with the left boundary held at a high potential and the other boundaries grounded. Each point on the grid corresponds to the electric potential at that location, and the grid as a whole acts as a simplified model of the material. This allows the electric behavior of the system to be studied numerically instead of analytically.
 
 Boundary conditions were applied by fixing the potential values along the edges of the grid. One side of the grid was set to a high potential to represent an applied voltage, while the remaining sides were set to ground. These fixed boundaries remained constant throughout the course of the simulation, while the interior grid points were free to update.
 
@@ -133,13 +149,13 @@ The potential values at the interior points were iteratively updated based on th
 \section{Procedures}
 First, the basic physical principles controlling electrical conduction were identified. Ohm’s law was used to relate current flow to the electric field, and the electric field was related to electric potential. Since charge does not accumulate in a steady-state system, these relationships combine and produce Laplace’s equation, which describes how electric potential behaves inside a uniform conductive material.
 
-To model this behavior computationally, the conductive material was represented using a Python program as a two-dimensional square grid. The grid was implemented as a \numproduct{50x50} NumPy array \cite{numpy}, where each element corresponds to the electric potential at a specific location in the material. Boundary conditions were applied by directly assigning fixed potential values to the grid edges. One side of the grid was set to a high potential in order to represent an applied voltage, while the other sides were set to zero to represent ground. These boundary values were held constant throughout the simulation.
+To model this behavior computationally, the conductive material was represented using a Python program as a two-dimensional square grid. The grid was implemented as a \numproduct{50x50} \texttt{numpy} array \cite{numpy}, where each element corresponds to the electric potential at a specific location in the material. Pinned boundary conditions were applied by directly assigning fixed potential values to the grid edges. One side of the grid was set to a high potential in order to represent an applied voltage, while the other sides were set to zero to represent ground. These boundary values were held constant throughout the simulation.
 
 The interior points of the grid were solved using an iterative finite-difference method. In the beginning, the potential at every interior point was updated to equal the average of its four closest neighboring points. This update was performed using nested loops in the code, while skipping the boundary points so their values stayed fixed. The update process was repeated for several thousand iterations until the potential value changes became negligible, which indicated that a steady-state solution was reached.
 
-Once the baseline solution was obtained, an internal defect was introduced into the model. This defect was represented by choosing a small square portion near the center of the grid and stopping those points from being updated during the iteration process. In the code, this was handled using a conditional statement that excluded the defect section from the averaging step. This region behaved as an insulating flaw within the material.
+Once the baseline solution was obtained, an internal defect was introduced into the model. This defect was represented by choosing a small square portion near the center of the grid and stopping those points from being updated during the iteration process. In the code, this was handled using a conditional statement that excluded the defect section from the averaging step. This region behaved as an insulating flaw within the material. The technique used here created a pinned boundary condition at the flaw with the nodes fixed at their initial values. Strictly speaking, this is not a no-flow boundary as might be expected for a nonconductive void; however, due to the location of the flaw at the centerline it behaves approximately the same way. 
 
-Lastly, the simulation results were visualized using Matplotlib \cite{matplotlib}. Heatmaps were generated to show the steady-state potential distribution for both the intact material and the material containing the defect. A difference plot was also created by subtracting the baseline potential grid from the defect grid. This showed how the defect changed the overall potential distribution.
+Lastly, the simulation results were visualized using \texttt{matplotlib} \cite{matplotlib}. Heatmaps were generated to show the steady-state potential distribution for both the intact material and the material containing the defect. A difference plot was also created by subtracting the baseline potential grid from the defect grid. This showed how the defect changed the overall potential distribution.
 
 Data and code are available at \url{https://github.com/devangel77b/426davalur-lab10}.
 
@@ -164,7 +180,7 @@ When a defect was added by blocking a small portion of the grid, the potential p
 \label{fig:3}
 \end{figure}
 
-Comparing the boundary values before and after adding the defect showed noticeable differences. This suggests that changes in the material can be detected by only looking at measurements taken along the surface.
+Comparing the boundary values before and after adding the defect showed noticeable differences in a region of about two- to three times the length of the flaw. This suggests that changes in the material can be detected by only looking at measurements taken along the surface.
 
 
 
@@ -173,14 +189,14 @@ Comparing the boundary values before and after adding the defect showed noticeab
 
 
 \section{Discussion}
-The results of this simulation show that internal changes within a conductive material can influence the electrical behavior observed at its surface. Even though the defect was located in the grid, its presence still altered the potential near the boundaries. This is important because it means that information about the interior of a material can be inferred without directly accessing it, which is the main idea behind non-destructive testing \cite{loke:2013:recent}.
+The results of this simulation show that internal changes within a conductive material can influence the electrical behavior observed at its surface. Even though the defect was located in the grid, its presence still altered the potential near the boundaries. This is important because it means that information about the interior of a material can be inferred without directly accessing it, which is the main idea behind non-destructive testing \cite{loke:2013:recent,hauptmann:2018:revealing}.
 
-The distortion caused by the defect was not limited to the immediate area around it. Instead, the effect spread outward and affected the overall potential pattern. This suggests that electrical measurements taken at the surface are sensitive to internal features. Even when those features are not visible or are relatively small.
+The distortion caused by the defect was not limited to the immediate area around it. Instead, the effect spread outward and affected the overall potential pattern to a distance of \numrange{2}{3} times the length of the flaw. This suggests that electrical measurements taken at the surface are sensitive to internal features. Even when those features are not visible or are relatively small.
 
 Even though this model is simplified, it captures the behavior of steady-state electrical conduction. The fact that a basic grid-based simulation is able to show these effects support the idea that electrical probing can be a useful tool for detecting internal mistakes. More detailed models could likely improve accuracy, but the trends observed are consistent with the expected physical behavior.
 
 \subsection{Limitations}
-This model uses many simplifying assumptions that limit how closely it represents a real physical system. The simulation is two-dimensional, while real conductive objects are three-dimensional, which means that some effects present in real materials are not captured here. The conductivity of the material is also assumed to be uniform, even though real materials can have variations that affect current flow. Also, the defect is represented as a completely blocked region, which is a simplified way of modeling an internal flaw. Lastly, the grid resolution is limited, so very detailed or small figures may not be accurately represented. These limitations are illustrated in Figure 4, which shows that the effect of the defect appears as a broad change in the potential rather than a defined feature.
+This model uses many simplifying assumptions that limit how closely it represents a real physical system. The simulation is two-dimensional, while real conductive objects are three-dimensional, which means that some effects present in real materials are not captured here. The conductivity of the material is also assumed to be uniform, even though real materials can have variations that affect current flow. Also, the defect is represented as a completely blocked region, which is a simplified way of modeling an internal flaw. Lastly, the grid resolution is limited, so very detailed or small figures may not be accurately represented. These limitations are illustrated in \cref{fig:4}, which shows that the effect of the defect appears as a broad change in the potential rather than a defined feature.
 \begin{figure}
 \begin{center}
 \includegraphics[width=\columnwidth]{figures/FIG\_4.pdf}
@@ -189,15 +205,16 @@ This model uses many simplifying assumptions that limit how closely it represent
 \label{fig:4}
 \end{figure}
 
-\subsection{Conclusion}
-This project showed that a simple numerical model can still reveal meaningful information about how electricity behaves in a conductive material. By modeling the material as a grid and solving for the steady-state potential, it became clear that internal changes, like an insulating defect, can affect the electrical behavior seen at the surface. Even with a basic setup, the defect caused noticeable distortions in the potential pattern, especially near the boundaries. This supports the idea that electrical measurements taken at the surface can be used to learn about what is happening inside a material. Overall, this model provides a clear example of how numerical methods can be used to explore non- destructive testing concepts in a straightforward and effective way.
-
 \subsection{Detectability limits of internal defects}
 An important question is how defect size and material properties affect whether a flaw can be detected from surface measurements. In this model, the defect was big enough to clearly distort the potential, but smaller defects would produce weaker, more localized changes that may not be visible at the boundaries.
 
 Material conductivity also plays a role. In highly conductive materials, current can redistribute more easily around a defect, reducing its effect on the surface potential. Also, this model does not include noise or measurement limitations, so it likely overestimates how detectable a defect would be in practice.
 
 Overall, while defects do influence surface measurements, their detectability depends on both their size and the material properties, and smaller defects may not always be observable.
+
+\subsection{Conclusion}
+This project showed that a simple numerical model can still reveal meaningful information about how electricity behaves in a conductive material. By modeling the material as a grid and solving for the steady-state potential, it became clear that internal changes, like an insulating defect, can affect the electrical behavior seen at the surface. Even with a basic setup, the defect caused noticeable distortions in the potential pattern, especially near the boundaries. This supports the idea that electrical measurements taken at the surface can be used to learn about what is happening inside a material. Overall, this model provides a clear example of how numerical methods can be used to explore non- destructive testing concepts in a straightforward and effective way.
+
 
 
 
@@ -209,14 +226,14 @@ Overall, while defects do influence surface measurements, their detectability de
 
 %\section*{Contributions}
 \section{Acknowledgement}
-DA developed the computational model, implemented the numerical simulation, and performed the analysis of the results. NK helped with developing the numerical approach, helped test and verify the simulation results, and contributed to editing and revising the written sections. AT supported the project by reviewing the model setup, helping with interpretation of the results, and providing feedback during the writing process.
+We thank the Manalapan High School Science \& Engineering program for their support. We thank several anonymous reviewers for helpful feedback. DA developed the computational model, implemented the numerical simulation, and performed the analysis of the results. NK helped with developing the numerical approach, helped test and verify the simulation results, and contributed to editing and revising the written sections. AT supported the project by reviewing the model setup, helping with interpretation of the results, and providing feedback during the writing process.
 
 
 
 
 \appendix
-\section{Implementation code}
-Code goes here
+%\subsection{Implementation code}\label{app:A}
+This code is available at \url{https://github.com/devangel77b/426davalur-lab10}. Relaxation is implemented at approximately line 48. Line 46 implements pinned nodes for a centerline defect. 
 \inputminted{python}{figures/main.py}
 
 
@@ -227,11 +244,11 @@ Code goes here
 
 % Images for the biography should be a 1in wide by 1.25 high or a 5:4 aspect ratio
 % Keep your biography short and to the point or the editors will shorten it
-\begin{IEEEbiography}[{\includegraphics[width=1in,height=1.25in,clip,keepaspectratio]{figures/davalur.jpeg}}]{Dia Avalur} is a senior in the Science and Engineering Magnet Program at Manalapan High School. Her main area of research is the intersection between engineering and medicine. 
+\begin{IEEEbiography}[{\includegraphics[width=1in,height=1.25in,clip,keepaspectratio]{figures/davalur.jpeg}}]{Dia Avalur} is a senior in the Science and Engineering Magnet Program at Manalapan High School. Her main area of research is the intersection between engineering and medicine, including the development of alginate patches for drug delivery, early detection of neurological conditions from machine learning, and studies of segmentation in medical imaging. 
 \end{IEEEbiography}
-\begin{IEEEbiography}[{\includegraphics[width=1in,height=1.25in,clip,keepaspectratio]{figures/kishore.jpeg}}]{Nitika Kishore} is a senior in the Science and Engineering Magnet Program at Manalapan High School. Her main area of research is the wonderful world of lasers. 
+\begin{IEEEbiography}[{\includegraphics[width=1in,height=1.25in,clip,keepaspectratio]{figures/kishore.jpeg}}]{Nitika Kishore} is a senior in the Science and Engineering Magnet Program at Manalapan High School. Her main area of research is the wonderful world of lasers. When she is not studying AP Physics C E\&M she enjoys developing low-cost intravenous monitoring devices and laser light shows that turn it up to 11. 
 \end{IEEEbiography}
-\begin{IEEEbiography}[{\includegraphics[width=1in,height=1.25in,clip,keepaspectratio]{figures/tokala.jpeg}}]{Anika Tokala} is a senior in the Science and Engineering Magnet Program at Manalapan High School. Her main area of research is accessibility technology. 
+\begin{IEEEbiography}[{\includegraphics[width=1in,height=1.25in,clip,keepaspectratio]{figures/tokala.jpeg}}]{Anika Tokala} is a senior in the Science and Engineering Magnet Program at Manalapan High School. Her main area of research is accessibility technology. When she is not studying AP Physics C E\&M she enjoys literature and developing screen readers to assist blind and visually impaired students with math. 
 \end{IEEEbiography}
 \vfill
 \end{document}
