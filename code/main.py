@@ -236,7 +236,7 @@ def save_difference_map(deltaV: np.ndarray, filename: str, title: str) -> None:
     im = ax.imshow(
         deltaV,
         cmap="bwr",
-        origin="lower"
+        origin="lower",
         extent=[0, Lx, 0, Ly],
         aspect="equal"
     )
