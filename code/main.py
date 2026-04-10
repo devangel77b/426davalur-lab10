@@ -63,7 +63,7 @@ def solve_laplace(N: int, iterations: int, defect_mask: np.ndarray | None = None
                     V[i, j + 1] +
                     V[i, j - 1]
                 )
-        # reapply boundary conditions each iteration just to be save
+        # reapply boundary conditions each iteration just to be safe
         apply_boundary_conditions(V)
     return V
 

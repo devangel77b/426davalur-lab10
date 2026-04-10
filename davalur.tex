@@ -47,7 +47,7 @@ pdfauthor={\@author},
 pdfsubject={physics},
 pdfkeywords={\keywords}}}
 \IEEEoverridecommandlockouts
-\IEEEpubid{\makebox[\columnwidth]{\href{https://doi.org/10.64804/xxxxxx}{10.64804/xxxxxxxx}~\copyright~2026 J S\&E \href{https://creativecommons.org/licenses/by-nc/4.0/}{CC-BY-NC 4.0}\hfill} \hspace{\columnsep}\makebox[\columnwidth]{ }}% LEAVE FOR EDITOR
+\IEEEpubid{\makebox[\columnwidth]{\href{https://doi.org/10.64804/9wkhqz81}{10.64804/9wkhqz81}~\copyright~2026 J S\&E \href{https://creativecommons.org/licenses/by-nc/4.0/}{CC-BY-NC 4.0}\hfill} \hspace{\columnsep}\makebox[\columnwidth]{ }}% LEAVE FOR EDITOR
 \makeatother
 
 
@@ -116,7 +116,7 @@ where the zero on the right hand side of \cref{eq:4} indicates the absence of in
 \begin{equation}
 4 V_X = V_E + V_W + V_N + V_S,
 \end{equation}
-where a given node point $V_X$ is adjacent to neighbors north, south, east, and west on a regular grid of uniform spacing $h$. We iteratively calculated $V$ by setting each interior point equal to the average of its four surrounding points. The process was repeated for 5000 iterations. as a convergence check during development, the mesh size was decreased and iterations increased tenfold with no change to results.
+where a given node point $V_X$ is adjacent to neighbors north, south, east, and west on a regular grid of uniform spacing $h$. We iteratively calculated $V$ by setting each interior point equal to the average of its four surrounding points. The process was repeated for 5000 iterations. As a convergence check during development, the mesh size was decreased and iterations increased tenfold with no change to results.
 
 
 
@@ -134,7 +134,7 @@ The potential values at the interior points were iteratively updated based on th
 \begin{center}
 \includegraphics[width=\columnwidth]{figures/Figure1_mask.png}
 \end{center}
-\caption{Computational grid and boundary conditions}
+\caption{Uniform regular square computational grid and pinned boundary conditions}
 \label{fig:1}
 \end{figure}
 
@@ -162,21 +162,21 @@ Data and code are available at \url{https://github.com/devangel77b/426davalur-la
 
 
 \section{Results}
-After running the simulation, the electric potential across the grid settled into a smooth pattern from the high-voltage side toward the sides that are grounded. This is what we expect from a solution to Laplace’s equation, and it showed that the numerical method was working correctly. The potential values stopped changing after multiple iterations, indicating that the system had reached a steady state. This electrical potential distribution obtained from the simulation is shown in \cref{fig:2}.
+After running the simulation, the electric potential across the grid settled into a smooth pattern from the high-voltage side toward the sides that are grounded. This is what we expect from a solution to Laplace’s equation with pinned boundary conditions, and it showed that the numerical method was working correctly. The potential values stopped changing after multiple iterations, indicating that the system had reached a steady state. This electrical potential distribution obtained from the simulation is shown in \cref{fig:2}.
 \begin{figure}
 \begin{center}
 \includegraphics[width=\columnwidth]{figures/Figure2_BaselinePotential.png}
 \end{center}
-\caption{Steady-state potential distribution (no defect)}
+\caption{Steady-state potential distribution (no defect) and electric field vectors}
 \label{fig:2}
 \end{figure}
 
-When a defect was added by blocking a small portion of the grid, the potential pattern changed. The values around the defect were distorted, and thisdisturbance spread outward toward the grid edges. The resulting electric potential distribution with the defect present is shown in \cref{fig:3}.
+When a defect was added by blocking a small portion of the grid, the potential pattern changed. The values around the defect were distorted, and this disturbance spread outward toward the grid edges. The resulting electric potential distribution with the defect present is shown in \cref{fig:3}.
 \begin{figure}
 \begin{center}
 \includegraphics[width=\columnwidth]{figures/Figure3_DefectPotential.png}
 \end{center}
-\caption{Steady-state potential distribution with internal defect}
+\caption{Steady-state potential distribution and electric field vectors with internal defect}
 \label{fig:3}
 \end{figure}
 
@@ -250,7 +250,7 @@ We thank the Manalapan High School Science \& Engineering program for their supp
 % Keep your biography short and to the point or the editors will shorten it
 \begin{IEEEbiography}[{\includegraphics[width=1in,height=1.25in,clip,keepaspectratio]{figures/davalur.jpeg}}]{Dia Avalur} is a senior in the Science and Engineering Magnet Program at Manalapan High School. Her main area of research is the intersection between engineering and medicine, including the development of alginate patches for drug delivery, early detection of neurological conditions from machine learning, and studies of segmentation in medical imaging. 
 \end{IEEEbiography}
-\begin{IEEEbiography}[{\includegraphics[width=1in,height=1.25in,clip,keepaspectratio]{figures/kishore.jpeg}}]{Nitika Kishore} is a senior in the Science and Engineering Magnet Program at Manalapan High School. Her main area of research is the wonderful world of lasers. When she is not studying AP Physics C E\&M she enjoys developing low-cost intravenous monitoring devices and laser light shows that turn it up to 11. 
+\begin{IEEEbiography}[{\includegraphics[width=1in,height=1.25in,clip,keepaspectratio]{figures/kishore.jpeg}}]{Nitika Kishore} is a senior in the Science and Engineering Magnet Program at Manalapan High School. Her main area of research is the wonderful world of lasers. When she is not studying AP Physics C E\&M she enjoys developing low-cost intravenous monitoring devices and breathtaking laser light shows that turn it up to 11. 
 \end{IEEEbiography}
 \begin{IEEEbiography}[{\includegraphics[width=1in,height=1.25in,clip,keepaspectratio]{figures/tokala.jpeg}}]{Anika Tokala} is a senior in the Science and Engineering Magnet Program at Manalapan High School. Her main area of research is accessibility technology. When she is not studying AP Physics C E\&M she enjoys literature and developing screen readers to assist blind and visually impaired students with math. 
 \end{IEEEbiography}
