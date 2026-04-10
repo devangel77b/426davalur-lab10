@@ -132,7 +132,7 @@ The potential values at the interior points were iteratively updated based on th
 
 \begin{figure}
 \begin{center}
-\includegraphics[width=\columnwidth]{figures/FIG\_1.pdf}
+\includegraphics[width=\columnwidth]{figures/Figure1_mask.png}
 \end{center}
 \caption{Computational grid and boundary conditions}
 \label{fig:1}
@@ -165,7 +165,7 @@ Data and code are available at \url{https://github.com/devangel77b/426davalur-la
 After running the simulation, the electric potential across the grid settled into a smooth pattern from the high-voltage side toward the sides that are grounded. This is what we expect from a solution to Laplace’s equation, and it showed that the numerical method was working correctly. The potential values stopped changing after multiple iterations, indicating that the system had reached a steady state. This electrical potential distribution obtained from the simulation is shown in \cref{fig:2}.
 \begin{figure}
 \begin{center}
-\includegraphics[width=\columnwidth]{figures/FIG\_2.pdf}
+\includegraphics[width=\columnwidth]{figures/Figure2_BaselinePotential.png}
 \end{center}
 \caption{Steady-state potential distribution (no defect)}
 \label{fig:2}
@@ -174,7 +174,7 @@ After running the simulation, the electric potential across the grid settled int
 When a defect was added by blocking a small portion of the grid, the potential pattern changed. The values around the defect were distorted, and thisdisturbance spread outward toward the grid edges. The resulting electric potential distribution with the defect present is shown in \cref{fig:3}.
 \begin{figure}
 \begin{center}
-\includegraphics[width=\columnwidth]{figures/FIG\_3.pdf}
+\includegraphics[width=\columnwidth]{figures/Figure3_DefectPotential.png}
 \end{center}
 \caption{Steady-state potential distribution with internal defect}
 \label{fig:3}
@@ -199,7 +199,7 @@ Even though this model is simplified, it captures the behavior of steady-state e
 This model uses many simplifying assumptions that limit how closely it represents a real physical system. The simulation is two-dimensional, while real conductive objects are three-dimensional, which means that some effects present in real materials are not captured here. The conductivity of the material is also assumed to be uniform, even though real materials can have variations that affect current flow. Also, the defect is represented as a completely blocked region, which is a simplified way of modeling an internal flaw. Lastly, the grid resolution is limited, so very detailed or small figures may not be accurately represented. These limitations are illustrated in \cref{fig:4}, which shows that the effect of the defect appears as a broad change in the potential rather than a defined feature.
 \begin{figure}
 \begin{center}
-\includegraphics[width=\columnwidth]{figures/FIG\_4.pdf}
+\includegraphics[width=\columnwidth]{figures/Figure4_PotentialDifference.png}
 \end{center}
 \caption{Difference in electric potential due to an internal defect}
 \label{fig:4}
@@ -233,8 +233,8 @@ We thank the Manalapan High School Science \& Engineering program for their supp
 
 \appendix
 %\subsection{Implementation code}\label{app:A}
-This code is available at \url{https://github.com/devangel77b/426davalur-lab10}. Relaxation is implemented at approximately line 48. Line 46 implements pinned nodes for a centerline defect. 
-\inputminted{python}{figures/main.py}
+This code is available at \url{https://github.com/devangel77b/426davalur-lab10}. Relaxation is implemented at approximately line 60. Line 58 implements pinned nodes for a centerline defect. 
+\inputminted{python}{code/main.py}
 
 
 

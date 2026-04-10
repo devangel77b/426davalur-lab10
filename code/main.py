@@ -8,12 +8,12 @@ from matplotlib.patches import Rectangle
 # ----------------------------
 # Settings
 # ----------------------------
-N = 50
-ITERATIONS = 5000
-V_HIGH = 1.0
-V_GROUND = 0.0
-# Defect settings
-DEFECT_HALF_WIDTH = 4
+N = 50 # grid dimensions N x N
+ITERATIONS = 5000 # number of relaxation iterations
+V_HIGH = 1.0 # high potential boundary value
+V_GROUND = 0.0 # grounded boundary value
+# Defect settings (squre block in the center)
+DEFECT_HALF_WIDTH = 4 # defect will be (2*half_width+1) by (2*half_width+1)
 # Physical size of square domain (meters)
 Lx = 0.05
 Ly = 0.05
@@ -30,10 +30,10 @@ def apply_boundary_conditions(V: np.ndarray) -> None:
     Left boundary = high potential
     All other boundaries = grounded
     """
-    V[:, 0] = V_HIGH
-    V[:, -1] = V_GROUND
-    V[0, :] = V_GROUND
-    V[-1, :] = V_GROUND
+    V[:, 0] = V_HIGH # left = high
+    V[:, -1] = V_GROUND # right = ground
+    V[0, :] = V_GROUND # top = ground
+    V[-1, :] = V_GROUND # bottom = ground
 
 
 
@@ -52,6 +52,7 @@ def solve_laplace(N: int, iterations: int, defect_mask: np.ndarray | None = None
     V = np.zeros((N, N), dtype=float)
     apply_boundary_conditions(V)
     for _ in range(iterations):
+        # update interior points
         for i in range(1, N - 1):
             for j in range(1, N - 1):
                 if defect_mask is not None and defect_mask[i, j]:
@@ -62,8 +63,9 @@ def solve_laplace(N: int, iterations: int, defect_mask: np.ndarray | None = None
                     V[i, j + 1] +
                     V[i, j - 1]
                 )
+        # reapply boundary conditions each iteration just to be save
         apply_boundary_conditions(V)
-        return V
+    return V
 
 
 
@@ -115,19 +117,41 @@ def compute_electric_field(V: np.ndarray, Lx: float, Ly: float):
 
 
 # ----------------------------
-# Figure 1: grid setup
+# Figure 1: discretized grid, boundary conditions, and mask
 # ----------------------------
-def save_figure1_grid_setup(filename: str, N: int) -> None:
-    grid = np.zeros((N, N))
-    plt.figure(figsize=(6, 6))
-    plt.imshow(grid, cmap="gray", origin="lower")
-    plt.text(N / 2, N + 2.5, "Ground", ha="center", fontsize=11)
-    plt.text(N / 2, -4, "Ground", ha="center", fontsize=11)
-    plt.text(-5, N / 2, "High Potential", rotation=90, va="center", fontsize=11)
-    plt.text(N + 3.5, N / 2, "Ground", rotation=90, va="center", fontsize=11)
-    plt.savefig(filename, dpi=300, bbox_inches="tight")
+# mask
+def save_mask(
+        mask: np.ndarray,
+        filename : str,
+        cmap: str = "gray") -> None:
+    x = np.linspace(0, Lx, mask.shape[1])
+    y = np.linspace(0, Ly, mask.shape[0])
+    X, Y = np.meshgrid(x,y)
+    plt.figure(figsize=(5,4))
+    ax = plt.gca()
+    im = ax.imshow(
+        mask,
+        cmap=cmap,
+        origin="lower",
+        extent=[0, Lx, 0, Ly],
+        aspect="equal",
+        vmin=0,
+        vmax=1
+    )
+    plt.text(0.025, 0.049, "0", ha="center",color=(0,1,1),fontsize=6)
+    plt.text(0.025, 0, "0", ha="center",color=(0,1,1),fontsize=6)
+    plt.text(0.049, 0.025, "0", rotation=90, va="center",color=(0,1,1),fontsize=6)
+    plt.text(0, 0.025, "+V", rotation=90, va="center",color=(0,1,1),fontsize=6)
+    ax.set_xticks(x,minor=True)
+    ax.set_yticks(y,minor=True)
+    ax.grid(which='minor',color=(0,1,1),linestyle='-',linewidth=0.1)
+    #cbar = plt.colorbar(im, ax=ax)
+    #cbar.set_label("mask region")
+    ax.set_xlabel("x (m)")
+    ax.set_ylabel("y (m)")
+    plt.tight_layout()
+    plt.savefig(filename, dpi=1200, bbox_inches="tight")
     plt.close()
-
 
 
 
@@ -139,7 +163,6 @@ def save_figure1_grid_setup(filename: str, N: int) -> None:
 def save_heatmap_with_field(
         V: np.ndarray,
         filename: str,
-        title: str,
         cmap: str = "viridis",
         defect_mask: np.ndarray | None = None,
         annotate_defect: bool = False
@@ -149,7 +172,7 @@ def save_heatmap_with_field(
     x = np.linspace(0, Lx, V.shape[1])
     y = np.linspace(0, Ly, V.shape[0])
     X, Y = np.meshgrid(x, y)
-    plt.figure(figsize=(6.2, 5.6))
+    plt.figure(figsize=(5, 4))
     ax = plt.gca()
     im = ax.imshow(
         V,
@@ -161,7 +184,7 @@ def save_heatmap_with_field(
         vmax=1
     )
     cbar = plt.colorbar(im, ax=ax)
-    cbar.set_label("Electric Potential (V)")
+    cbar.set_label("electric potential (V)")
 
     # Subsample arrows so plot isn't overcrowded
     step = 4
@@ -178,7 +201,7 @@ def save_heatmap_with_field(
     ax.quiver(
         Xq, Yq, Exq, Eyq,
         color="black",
-        scale=120,
+        #scale=10,
         width=0.003,
         headwidth=3,
         headlength=4
@@ -209,18 +232,17 @@ def save_heatmap_with_field(
             ax.text(
                 x0 + width / 2,
                 y0 + height / 2,
-                "Defect Region",
+                "defect",
                 color="black",
                 fontsize=8,
                 ha="center",
                 va="center"
             )
             
-    ax.set_title(title, fontsize=10)
     ax.set_xlabel("x (m)")
     ax.set_ylabel("y (m)")
     plt.tight_layout()
-    plt.savefig(filename, dpi=300, bbox_inches="tight")
+    plt.savefig(filename, dpi=1200, bbox_inches="tight")
     plt.close()
 
 
@@ -230,8 +252,12 @@ def save_heatmap_with_field(
 # ----------------------------
 # Difference map
 # ----------------------------
-def save_difference_map(deltaV: np.ndarray, filename: str, title: str) -> None:
-    plt.figure(figsize=(6.2, 5.6))
+def save_difference_map(
+        deltaV: np.ndarray,
+        filename: str,
+        defect_mask: np.ndarray | None = None,
+        annotate_defect: bool = False) -> None:
+    plt.figure(figsize=(5, 4))
     ax = plt.gca()
     im = ax.imshow(
         deltaV,
@@ -240,13 +266,45 @@ def save_difference_map(deltaV: np.ndarray, filename: str, title: str) -> None:
         extent=[0, Lx, 0, Ly],
         aspect="equal"
     )
+
+        # Draw defect box if present
+    if defect_mask is not None:
+        rows, cols = np.where(defect_mask)
+        i_min, i_max = rows.min(), rows.max()
+        j_min, j_max = cols.min(), cols.max()
+        
+        dx = Lx / (deltaV.shape[1] - 1)
+        dy = Ly / (deltaV.shape[0] - 1)
+        x0 = j_min * dx
+        y0 = i_min * dy
+        width = (j_max - j_min + 1) * dx
+        height = (i_max - i_min + 1) * dy
+        rect = Rectangle(
+            (x0, y0), width, height,
+            linewidth=1.5,
+            edgecolor="black",
+            facecolor="none",
+            linestyle="--"
+        )
+        ax.add_patch(rect)
+        
+        if annotate_defect:
+            ax.text(
+                x0 + width / 2,
+                y0 + height / 2,
+                "defect",
+                color="black",
+                fontsize=8,
+                ha="center",
+                va="center"
+            )
+
     cbar = plt.colorbar(im, ax=ax)
-    cbar.set_label("Change in Electric Potential (V)")
-    ax.set_title(title, fontsize=10)
+    cbar.set_label("change in electric potential (V)")
     ax.set_xlabel("x (m)")
     ax.set_ylabel("y (m)")
     plt.tight_layout()
-    plt.savefig(filename, dpi=300, bbox_inches="tight")
+    plt.savefig(filename, dpi=1200, bbox_inches="tight")
     plt.close()
 
 
@@ -259,14 +317,13 @@ def save_difference_map(deltaV: np.ndarray, filename: str, title: str) -> None:
 # ----------------------------
 def main():
     # Figure 1
-    save_figure1_grid_setup("Figure1_GridSetup.png", N)
+    #save_figure1_grid_setup("Figure1_GridSetup.png", N)
     
     # No defect
     V_base = solve_laplace(N, ITERATIONS)
     save_heatmap_with_field(
         V_base,
         "Figure2_BaselinePotential.png",
-        "Steady-State Potential Distribution (No Defect)",
         cmap="viridis"
     )
     
@@ -276,7 +333,6 @@ def main():
     save_heatmap_with_field(
         V_defect,
         "Figure3_DefectPotential.png",
-        "Potential Distribution with Internal Defect",
         cmap="viridis",
         defect_mask=defect_mask,
         annotate_defect=True
@@ -287,8 +343,12 @@ def main():
     save_difference_map(
         deltaV,
         "Figure4_PotentialDifference.png",
-        "Difference in Electric Potential Due to an Internal Defect"
+        defect_mask=defect_mask,
+        annotate_defect=True
     )
+
+    # defect mask
+    save_mask(defect_mask,"Figure1_mask.png")
     
     print("Done. Generated Figure1–Figure4 PNG files.")
 
