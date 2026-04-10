@@ -145,8 +145,8 @@ def save_mask(
     ax.set_xticks(x,minor=True)
     ax.set_yticks(y,minor=True)
     ax.grid(which='minor',color=(0,1,1),linestyle='-',linewidth=0.1)
-    #cbar = plt.colorbar(im, ax=ax)
-    #cbar.set_label("mask region")
+    cbar = plt.colorbar(im, ax=ax)
+    cbar.set_label("mask")
     ax.set_xlabel("x (m)")
     ax.set_ylabel("y (m)")
     plt.tight_layout()
@@ -299,6 +299,7 @@ def save_difference_map(
                 va="center"
             )
 
+    im.set_clim(-0.3,0.3)
     cbar = plt.colorbar(im, ax=ax)
     cbar.set_label("change in electric potential (V)")
     ax.set_xlabel("x (m)")

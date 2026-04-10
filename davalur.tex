@@ -47,7 +47,7 @@ pdfauthor={\@author},
 pdfsubject={physics},
 pdfkeywords={\keywords}}}
 \IEEEoverridecommandlockouts
-\IEEEpubid{\makebox[\columnwidth]{10.64804/xxxxxxxx~\copyright~2026 J S\&E \href{https://creativecommons.org/licenses/by-nc/4.0/}{CC-BY-NC 4.0}\hfill} \hspace{\columnsep}\makebox[\columnwidth]{ }}% LEAVE FOR EDITOR
+\IEEEpubid{\makebox[\columnwidth]{\href{https://doi.org/10.64804/xxxxxx}{10.64804/xxxxxxxx}~\copyright~2026 J S\&E \href{https://creativecommons.org/licenses/by-nc/4.0/}{CC-BY-NC 4.0}\hfill} \hspace{\columnsep}\makebox[\columnwidth]{ }}% LEAVE FOR EDITOR
 \makeatother
 
 
@@ -116,7 +116,7 @@ where the zero on the right hand side of \cref{eq:4} indicates the absence of in
 \begin{equation}
 4 V_X = V_E + V_W + V_N + V_S,
 \end{equation}
-where a given node point $V_X$ is adjacent to neighbors north, south, east, and west on a regular grid of uniform spacing $h$. We iteratively calculated $V$ by setting each interior point equal to the average of its four surrounding points. The process was repeated until the potential value stopped changing and was stabilized according to some small tolerance $\delta < \num{1e-6}$.
+where a given node point $V_X$ is adjacent to neighbors north, south, east, and west on a regular grid of uniform spacing $h$. We iteratively calculated $V$ by setting each interior point equal to the average of its four surrounding points. The process was repeated for 5000 iterations. as a convergence check during development, the mesh size was decreased and iterations increased tenfold with no change to results.
 
 
 
@@ -219,22 +219,26 @@ This project showed that a simple numerical model can still reveal meaningful in
 
 
 
+\appendix
+%\subsection{Implementation code}\label{app:A}
+This code is available at \url{https://github.com/devangel77b/426davalur-lab10}. Relaxation is implemented at approximately line 60. Line 58 implements pinned nodes for a centerline defect. 
+\inputminted{python}{code/main.py}
+
+
+
 
 
 
 
 
 %\section*{Contributions}
-\section{Acknowledgement}
+\section*{Acknowledgment}
+\addcontentsline{toc}{section}{Acknowledgment} 
 We thank the Manalapan High School Science \& Engineering program for their support. We thank several anonymous reviewers for helpful feedback. DA developed the computational model, implemented the numerical simulation, and performed the analysis of the results. NK helped with developing the numerical approach, helped test and verify the simulation results, and contributed to editing and revising the written sections. AT supported the project by reviewing the model setup, helping with interpretation of the results, and providing feedback during the writing process.
 
 
 
 
-\appendix
-%\subsection{Implementation code}\label{app:A}
-This code is available at \url{https://github.com/devangel77b/426davalur-lab10}. Relaxation is implemented at approximately line 60. Line 58 implements pinned nodes for a centerline defect. 
-\inputminted{python}{code/main.py}
 
 
 
